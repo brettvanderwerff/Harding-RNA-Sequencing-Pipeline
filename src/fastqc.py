@@ -1,5 +1,4 @@
 import os
-import RNA_seq_analysis
 from src.config import CONFIGURATION
 import subprocess
 import wget
@@ -18,18 +17,16 @@ def get_fastqc():
         os.remove(os.path.join(os.getcwd(), os.path.basename('fastqc_v0.11.7.zip')))
         os.chmod('./FastQC/fastqc', 0o755)
 
-def exec_fastqc(fastq_dir):
-    output_dir = os.path.join(os.path.dirname(RNA_seq_analysis.__file__),
-                                      os.path.basename('outputs'),
-                                      os.path.basename('FastQC_output'))
-    fastqc_dir = os.path.join(os.getcwd(), os.path.basename('FastQC'), os.path.basename('fastqc'))
-    if not os.path.isdir(output_dir):
-        os.mkdir(output_dir)
+def exec_fastqc(fastq_dir, fastqc_dir, fastqc_output_dir):
+    '''Runs FastQC to analyze RNA read quality
+    '''
     os.chmod('./gen_fastqc.sh', 0o755)
-    subprocess.call(['./gen_fastqc.sh', fastq_dir, fastqc_dir, output_dir])
+    subprocess.call(['./gen_fastqc.sh', fastq_dir, fastqc_dir, fastqc_output_dir])
 
 
 if __name__ == '__main__':
+    fastqc_dir = CONFIGURATION['fastqc_dir']
+    fastqc_output_dir = CONFIGURATION['fastqc_output_dir']
     fastq_dir = CONFIGURATION['fastq_dir']
     get_fastqc()
-    exec_fastqc(fastq_dir)
+    exec_fastqc(fastq_dir, fastqc_dir, fastqc_output_dir)
