@@ -26,7 +26,7 @@ def make_genome_index(genome_annotation_dir, genome_sequence_dir, genome_index_d
 
 
 def exec_map(genome_index_dir, fastq_dir, star_dir, bam_output_dir):
-    '''Uses STAR to map RNA reads to a genome index
+    '''Uses STAR to map RNA reads to a genome index.
     '''
     os.chmod('./map_reads.sh', 0o755)
     subprocess.call(['./map_reads.sh', genome_index_dir, fastq_dir, star_dir, bam_output_dir])
@@ -38,5 +38,7 @@ if __name__ == '__main__':
     genome_sequence_dir = CONFIGURATION['genome_sequence_dir']
     fastq_dir = CONFIGURATION['fastq_dir']
     star_dir = CONFIGURATION['star_dir']
-    bam_dir = CONFIGURATION['bam_dir']
-    exec_map(genome_sequence_dir, fastq_dir, star_dir, bam_dir)
+    bam_output_dir = CONFIGURATION['bam_output_dir']
+    get_star()
+    make_genome_index(genome_annotation_dir, genome_sequence_dir, genome_index_dir, star_dir)
+    exec_map(genome_sequence_dir, fastq_dir, star_dir, bam_output_dir)
