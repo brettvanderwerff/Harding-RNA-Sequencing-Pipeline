@@ -12,7 +12,7 @@ do
     echo "Counting features of $base"
 	$feature_counts_dir \
 	    -T 6 \
-	    -t exon \
+	    -t gene \
 	    -g gene_id \
 	    -a $annotations_dir \
 	    -o $output_dir$base.count.txt \
