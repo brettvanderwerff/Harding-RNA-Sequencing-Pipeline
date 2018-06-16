@@ -20,9 +20,15 @@ def get_gene_counts(count_output_dir):
     geneid.to_csv(os.path.join(count_output_dir,
                                os.path.basename('featureCounts_matrix.csv')), sep=',', index=False)
 
-
-if __name__ == '__main__':
+def run():
+    '''Runs the get_gene_counts script.
+    '''
     count_output_dir = CONFIGURATION['count_output_dir']
     get_gene_counts(count_output_dir)
+
+
+if __name__ == '__main__':
+    run()
+
 
 

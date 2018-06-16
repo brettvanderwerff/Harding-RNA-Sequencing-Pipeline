@@ -1,6 +1,6 @@
 import os
 
-source_folder = '/media/vande060/101A04EA101A04EA/MSP_RNA_Seq/'
+source_folder = '/media/vande060/101A04EA101A04EA/PDGF_FGF_4_hr/'
 
 CONFIGURATION = {
     'count_output_dir' : source_folder + 'featureCounts_output/',
@@ -12,7 +12,7 @@ CONFIGURATION = {
                                         os.path.basename('subread-1.6.2-Linux-x86_64'),
                                         os.path.basename('bin'), os.path.basename('featureCounts')),
     'genome_index_dir' : source_folder + 'genome_index/',
-    'genome_sequence_dir' : source_folder + '/genome/sequence/genome.fa',
+    'genome_sequence_dir' : source_folder + 'genome/sequence/genome.fa',
     'bam_output_dir' : source_folder + 'bams/',
     'star_dir' : os.path.join(os.getcwd(), os.path.basename('STAR-2.6.0a'), os.path.basename('bin'),
                             os.path.basename('Linux_x86_64'), os.path.basename('STAR'))
