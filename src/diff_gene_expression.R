@@ -1,5 +1,5 @@
 # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4387895/
-setwd('/media/vande060/101A04EA101A04EA/MSP_RNA_Seq/featureCounts_output')
+setwd('C:/Users/vande060/Desktop/coding/projects/Harding-RNA-Sequencing-Pipeline')
 
 # load edgeR library
 library(edgeR)
@@ -14,13 +14,14 @@ head(datain)
 # defines grouping factors for the treaments
 group <- c('control', 'control', 'msp_ron', 'control', 'msp_ron', 'msp_ron')
 
-# generate DGElist object
-dge <- DGEList(counts=datain, group=group)
+# generate DGElist object, genes that have all zero gene counts
+dge <- DGEList(counts=datain, group=group, remove.zeros = TRUE)
 
 # visualize the DGElist object
 dge
 
-dge = calcNormFactors(dge)
+# normalization of gene counts by the weighted trimmed mean of of M-values method
+dge = calcNormFactors(dge, method="TMM")
 dge
 par("mar")
 par(mar=c(1,1,1,1))
