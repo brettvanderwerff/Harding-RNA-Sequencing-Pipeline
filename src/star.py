@@ -8,12 +8,13 @@ def get_star():
     '''
      If STAR is not already downloaded, function downloads STAR version 2.6.0a tars file, and extracts the tarfile.
      '''
-    if not os.path.isdir(os.path.join(os.path.dirname(__file__), os.path.basename('STAR-2.6.0a'))):
+    file_dir = os.path.dirname(__file__)
+    if not os.path.isdir(os.path.join(file_dir, os.path.basename('STAR-2.6.0a'))):
         star_url = 'https://github.com/alexdobin/STAR/archive/2.6.0a.tar.gz'
         wget.download(star_url)
-        with tarfile.open("STAR-2.6.0a.tar.gz", "r") as tar_obj:
-            tar_obj.extractall()
-        os.remove(os.path.join(os.getcwd(), os.path.basename('STAR-2.6.0a.tar.gz')))
+        with tarfile.open(os.path.join(file_dir, os.path.basename('"STAR-2.6.0a.tar.gz"')), "r") as tar_obj:
+            tar_obj.extractall(file_dir)
+        os.remove(os.path.join(file_dir, os.path.basename('STAR-2.6.0a.tar.gz')))
 
 def make_genome_index(genome_annotation_dir, genome_sequence_dir, genome_index_dir, star_dir):
     '''

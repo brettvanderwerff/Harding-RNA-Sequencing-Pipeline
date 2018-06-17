@@ -5,25 +5,27 @@ import wget
 import zipfile
 
 
-def get_fastqc():
+def get_fastqc(fastqc_dir):
     '''If FastQC is not already downloaded, function downloads FastQC version 0.11.7 zip file, unzips file, and
     makes fastqc executable.
     '''
-    if not os.path.isdir(os.path.join(os.path.dirname(__file__), os.path.basename('FastQC'))):
+    file_dir = os.path.dirname(__file__)
+    if not os.path.isdir(os.path.join(file_dir, os.path.basename('FastQC'))):
         fastqc_url = 'https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.7.zip'
-        wget.download(fastqc_url)
-        with zipfile.ZipFile('fastqc_v0.11.7.zip', "r") as zip_obj:
-            zip_obj.extractall()
-        os.remove(os.path.join(os.getcwd(), os.path.basename('fastqc_v0.11.7.zip')))
-        os.chmod('./FastQC/fastqc', 0o755)
+        wget.download(fastqc_url, out=file_dir)
+        with zipfile.ZipFile(os.path.join(file_dir, os.path.basename('fastqc_v0.11.7.zip')), "r") as zip_obj:
+            zip_obj.extractall(file_dir)
+        os.remove(os.path.join(file_dir, os.path.basename('fastqc_v0.11.7.zip')))
+        os.chmod(fastqc_dir, 0o755)
 
 def exec_fastqc(fastq_dir, fastqc_dir, fastqc_output_dir):
     '''Runs FastQC to analyze RNA read quality
     '''
+    file_dir = os.path.dirname(__file__)
     if not os.path.isdir(fastqc_output_dir):
         os.mkdir(fastqc_output_dir)
-    os.chmod('./gen_fastqc.sh', 0o755)
-    subprocess.call(['./gen_fastqc.sh', fastq_dir, fastqc_dir, fastqc_output_dir])
+    os.chmod('{}/gen_fastqc.sh'.format(file_dir), 0o755)
+    subprocess.call(['{}/gen_fastqc.sh'.format(file_dir), fastq_dir, fastqc_dir, fastqc_output_dir])
 
 def run():
     '''
@@ -32,7 +34,7 @@ def run():
     fastqc_dir = CONFIGURATION['fastqc_dir']
     fastqc_output_dir = CONFIGURATION['fastqc_output_dir']
     fastq_dir = CONFIGURATION['fastq_dir']
-    get_fastqc()
+    get_fastqc(fastqc_dir)
     exec_fastqc(fastq_dir, fastqc_dir, fastqc_output_dir)
 
 
