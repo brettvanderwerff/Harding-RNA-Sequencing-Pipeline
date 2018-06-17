@@ -12,84 +12,97 @@ head(datain)
 
 
 # defines grouping factors for the treaments
-group <- c('control', 'control', 'msp_ron', 'control', 'msp_ron', 'msp_ron')
+group <- factor(c('control', 'control', 'msp_ron', 'control', 'msp_ron', 'msp_ron'))
 
 # generate DGElist object, genes that have all zero gene counts
-dge <- DGEList(counts=datain, group=group, remove.zeros = TRUE)
+dge <- DGEList(counts=datain, group=group)
 
 # visualize the DGElist object
 dge
 
+
+# filter DGElist object to keep only the genes that have at least .5 count per million (cpm) in at least 2 samples
+
+keep <- rowSums(cpm(dge) > 0.5) >= 2
+dge <- dge[keep, keep.lib.sizes=FALSE]
+
+
 # normalization of gene counts by the weighted trimmed mean of of M-values method
-dge = calcNormFactors(dge, method="TMM")
-dge
+dge <- calcNormFactors(dge, method="TMM")
+
+# MDS plot of DGE list object
+
 par("mar")
 par(mar=c(1,1,1,1))
-main='MDS Plot for Count Data'
-plotMDS(dge,main=main,labels=colnames(dge$counts),col=as.numeric(dge$samples$group),las=1)
-normalized.counts = cpm(dge)
-transposed = t(normalized.counts)
-distance = dist(transposed)
-clusters=hclust(distance)
-plot(clusters)
+plotMDS(dge)
 
-dge=estimateCommonDisp(dge)
-dge=estimateTagwiseDisp(dge)
-dge
-dex=exactTest(dge,pair=c("control","PDGF"),dispersion="tagwise")
+# MD plots of all samples to detect skews in gene expression
+for (column in c(1,2,3,4,5,6)){
+  plotMD(dge, column=column)
+  abline(h=0, col="red", lty=2, lwd=2)
+}
 
-fdrvalues=p.adjust(dex$table$PValue, method='BH') 
-dex$table$fdr=fdrvalues
-summary(decideTestsDGE(dex,p=0.05))
-summary(decideTestsDGE(dex,p=0.01))
-summary(decideTestsDGE(dex,p=0.005))
-cutoff=0.005 
-de = decideTestsDGE(dex, p = cutoff, adjust = "BH")
-detags = rownames(dex)[as.logical(de)]
-plotSmear(dex, de.tags = detags)
-abline(h = c(-1, 1), col = "blue")
+# Generation fo the design matrix
+design <- model.matrix(~0+group)
+colnames(design) <- levels(group)
+design
+
+# Dispersion estimate
+
+dge <- estimateDisp(dge, design, robust=TRUE)
+
+# Visualize dispersion estimate
+plotBCV(dge)
+
+# Estimation of QL dispersions
+
+fit <- glmQLFit(dge, design, robust=TRUE)
+head(fit$coefficients)
+
+# Visualize QL dispersions
+
+plotQLDisp(fit)
+
+# summarize the df prior
+summary(fit$df.prior)
+
+# make differential gene expression comparison
+
+controlvsmsp_ron <- makeContrasts(control-msp_ron,levels=design)
+result <- glmQLFTest(fit, contrast=controlvsmsp_ron)
+
+# observe DE genes
+
+topTags(result)
+
+# total number of DE genes identified at the default FDR of 5%
+
+is.de <- decideTestsDGE(result)
+summary(is.de)
+
+# magnitude of differential expression plots visualized with fitted model MD plot
+
+plotMD(result, status=is.de, values=c(1,-1), col=c('red', 'blue'), legend='topright')
+
+# To reduce the number of genes to inlcude only those with log fold changes grater than 1.5
+
+tr <- glmTreat(fit, contrast=controlvsmsp_ron, lfc=log2(1.5))
+topTags(tr)
+
+# total number of DE genes identified with logFC > 1.5 at the default FDR of 5%
+
+is.de <- decideTestsDGE(tr)
+summary(is.de)
+
+# save the results table
+write.table(is.de, file='key.csv', sep=',')
+write.table(topTags(tr, n=Inf), file='trimmed_results.csv', sep=',')
+
+# visualize more stringent list of DE genes 
+
+plotMD(tr, status=is.de, values=c(1,-1), col=c("red","blue"), legend="topright")
+
+# heatmap clustering
 
 
-# get normalized counts per million
-cpms=cpm(dge$counts) 
-# find out which columns have controls
-control=grep('control',colnames(cpms))
-# find out which columns have treatments
-msp_ron=grep('msp_ron',colnames(cpms))
-# calculate the average expression for control samples
-ave.control=apply(cpms[,control],1,mean)
-# calculate average expression for treatment samples
-ave.msp_ron=apply(cpms[,msp_ron],1,mean)
-# make a data frame 
-res=data.frame(gene=row.names(dex$table),
-               fdr=dex$table$fdr,
-               logFC=dex$table$logFC,
-               control=ave.control,
-               msp_ron=ave.msp_ron)
-# read gene information (originally from IGB quickload site)
-# this is a "bed detail" file
 
-# keep gene id and gene description columns
-annots=read.delim(file='featureCounts_matrix.csv', sep=',')[1]
-# name the columns
-names(annots)=c('gene')
-# combine gene expression and annotations
-res=merge(res,annots,by.x='gene',by.y='gene')
-# put the results in order of signficance (fdr)
-res=res[order(res$fdr),]
-print(res)
-# put columns in an order easy to browse
-res=res[,c('fdr','logFC','control','msp_ron','gene')]
-# write DE genes to a file:
-out_file='results.tsv'
-# select just the rows that made the cutoff
-de=res$fdr<=cutoff
-# write DE genes only
-write.table(res[de,],file=out_file,row.names=F,sep='\t',quote=F)
-# Make a file we can load into LycoCyc for pathways visualization
-out_file='results/forLycoCyc.tsv'
-write.table(res[de,c('gene','logFC')],file=out_file,quote=FALSE,
-            sep='\t',col.names=FALSE,row.names=FALSE)
-# write all DE genes
-out_file='results/tomatoAllDE.txt'
-write.table(res,file=out_file,row.names=F,sep='\t',quote=F)
