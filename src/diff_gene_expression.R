@@ -1,5 +1,10 @@
 # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4387895/
-setwd('C:/Users/vande060/Desktop/coding/projects/Harding-RNA-Sequencing-Pipeline')
+
+arg <- commandArgs(trailingOnly = TRUE)
+
+print(arg)
+
+setwd(arg)
 
 # load edgeR library
 library(edgeR)
@@ -102,7 +107,7 @@ write.table(topTags(tr, n=Inf), file='trimmed_results.csv', sep=',')
 
 plotMD(tr, status=is.de, values=c(1,-1), col=c("red","blue"), legend="topright")
 
-# heatmap clustering
+
 
 
 

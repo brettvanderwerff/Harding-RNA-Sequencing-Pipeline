@@ -1,6 +1,6 @@
 import os
 
-source_folder = '/media/vande060/101A04EA101A04EA/PDGF_FGF_4_hr/'
+source_folder = '/media/vande060/101A04EA101A04EA/MSP_RNA_Seq/'
 
 CONFIGURATION = {
     'count_output_dir' : source_folder + 'featureCounts_output/',
