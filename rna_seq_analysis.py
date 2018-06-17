@@ -5,8 +5,8 @@ from src import subread
 
 if __name__ == '__main__':
     fastqc.run()
-    star.run()
-    subread.run()
-    clean_counts.run()
+    #star.run()
+    #subread.run()
+    #clean_counts.run()
 
 
