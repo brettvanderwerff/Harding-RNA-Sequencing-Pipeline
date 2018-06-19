@@ -1,9 +1,5 @@
 # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4387895/
 
-arg <- commandArgs(trailingOnly = TRUE)
-
-print(arg)
-
 setwd(arg)
 
 # load edgeR library
@@ -36,10 +32,9 @@ dge <- dge[keep, keep.lib.sizes=FALSE]
 dge <- calcNormFactors(dge, method="TMM")
 
 # MDS plot of DGE list object
-
 par("mar")
 par(mar=c(1,1,1,1))
-plotMDS(dge)
+plotMDS(dge, col=as.numeric(dge$samples$group))
 
 # MD plots of all samples to detect skews in gene expression
 for (column in c(1,2,3,4,5,6)){
