@@ -34,18 +34,8 @@ The EdgeR analysis was inspired by the following publication: doi: 10.12688/f100
 
 1. Clone repo to your computer
 2. Open `src/config.py` and change the source_folder variable to point to the directory containing your project. Your project should have the following structure:
-
     .
-    ├── build                   # Compiled files (alternatively `dist`)
-    ├── docs                    # Documentation files (alternatively `doc`)
-    ├── src                     # Source files (alternatively `lib` or `app`)
-    ├── test                    # Automated tests (alternatively `spec` or `tests`)
-    ├── tools                   # Tools and utilities
-    ├── LICENSE
-    └── README.md
-
-
-    .
+    
     ├──fastqs    #the fastqs folder will contain your single end read .fastq files
 
 Note that by default the source_folder is set to an 'Example' folder to where .fastq files from the following study will be downloaded to: https://www.ebi.ac.uk/ena/data/view/PRJNA229803 for an example analysis. If using your own project, prevent the downloading of these files by commenting out the `get_example_fastq` function in the `rna_seq_analysis.py` module
