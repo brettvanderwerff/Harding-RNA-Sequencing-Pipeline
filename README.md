@@ -35,6 +35,28 @@ The EdgeR analysis was inspired by the following publication: doi: 10.12688/f100
 1. Clone repo to your computer
 2. Open `src/config.py` and change the source_folder variable to point to the directory containing your project. Your project should have the following structure:
 
+```bash
+├── app
+│   ├── css
+│   │   ├── **/*.css
+│   ├── favicon.ico
+│   ├── images
+│   ├── index.html
+│   ├── js
+│   │   ├── **/*.js
+│   └── partials/template
+├── dist (or build)
+├── node_modules
+├── bower_components (if using bower)
+├── test
+├── Gruntfile.js/gulpfile.js
+├── README.md
+├── package.json
+├── bower.json (if using bower)
+└── .gitignore
+```
+
+
     .
     
     ├──fastqs    #the fastqs folder will contain your single end read .fastq files
