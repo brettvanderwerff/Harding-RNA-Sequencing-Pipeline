@@ -34,6 +34,7 @@ The EdgeR analysis was inspired by the following publication: doi: 10.12688/f100
 
 1. Clone repo to your computer
 2. Open `src/config.py` and change the source_folder variable to point to the directory containing your project. Your project should have the following structure:
+
     .
     
     ├──fastqs    #the fastqs folder will contain your single end read .fastq files
