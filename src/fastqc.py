@@ -4,7 +4,6 @@ import subprocess
 import wget
 import zipfile
 
-
 def get_fastqc(fastqc_dir):
     '''If FastQC is not already downloaded, function downloads FastQC version 0.11.7 zip file, unzips file, and
     makes fastqc executable.

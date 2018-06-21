@@ -1,6 +1,6 @@
 import os
 
-source_folder = '/media/vande060/101A04EA101A04EA/MSP_RNA_Seq/'
+source_folder = os.path.join(os.path.dirname(__file__), os.path.basename('Example'))
 
 CONFIGURATION = {
     'count_output_dir' : source_folder + 'featureCounts_output/',
