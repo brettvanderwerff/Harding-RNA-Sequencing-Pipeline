@@ -54,6 +54,10 @@ And the corresponding gene annotations for the human genome (for placing in the 
 
 http://ftp.ensembl.org/pub/release-92/gtf/homo_sapiens/Homo_sapiens.GRCh38.92.gtf.gz
 
+3. Open `src/diff_gene_expression.R` and change any reference to grouping factors to fit your study (Note that the grouping factors are 'msp_ron' and 'control' by default to match the example .fastq files)
+
+4. Begin the analysis by running the `rna_seq_analysis.py` file, analysis may take anywhere from a few hours to a few days depending on the size of the genome and the number of .fastq files being analyzed. Results will be written to the 'featureCounts_output' directory of your project folder. 
+
            
 
 
