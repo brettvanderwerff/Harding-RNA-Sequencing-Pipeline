@@ -46,11 +46,11 @@ The EdgeR analysis was inspired by the following publication: doi: 10.12688/f100
 
 Note that by default the source_folder is set to an 'Example' folder to where .fastq files from the following study will be downloaded to: https://www.ebi.ac.uk/ena/data/view/PRJNA229803 for an example analysis. If using your own project, prevent the downloading of these files by commenting out the `get_example_fastq` function in the `rna_seq_analysis.py` module
 
-Also note that a copy of the human genome in FASTA format can be obtained here:
+Also note that a copy of the human genome in FASTA format (for placing in the 'sequence' folder) can be obtained here:
 
 http://ftp://ftp.ensembl.org/pub/release-92/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
 
-And the corresponding gene annotations for the human genome can be obtained here: 
+And the corresponding gene annotations for the human genome (for placing in the 'annotation' folder) can be obtained here: 
 
 http://ftp.ensembl.org/pub/release-92/gtf/homo_sapiens/Homo_sapiens.GRCh38.92.gtf.gz
 
