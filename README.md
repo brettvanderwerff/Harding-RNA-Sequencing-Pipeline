@@ -48,7 +48,7 @@ Note that by default the source_folder is set to an 'Example' folder to where .f
 
 Also note that a copy of the human genome in FASTA format can be obtained here:
 
-ftp://ftp.ensembl.org/pub/release-92/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+http://ftp://ftp.ensembl.org/pub/release-92/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
 
 And the corresponding gene annotations for the human genome can be obtained here: 
 
