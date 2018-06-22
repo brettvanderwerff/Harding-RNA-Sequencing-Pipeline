@@ -35,12 +35,12 @@ The EdgeR analysis was inspired by the following publication: doi: 10.12688/f100
 1. Clone repo to your computer
 2. Open `src/config.py` and change the source_folder variable to point to the directory containing your project. Your project should have the following structure:
 
-```bash
+```
 .
 ├── fastqs  # folder for raw .fastq files
 ├──genome
-│   ├── sequence # folder to place a FASTA fromat genome sequence file (must be names genome.fa)
-│   └── annotation # folder to place genome annotation (must be named genes.gtf)
+│   ├── sequence # folder to place a FASTA format genome sequence file (must be named 'genome.fa')
+│   └── annotation # folder to place genome annotation (must be named 'genes.gtf')
 └── genome_index  # folder STAR will write the genome index to
 ```
 
