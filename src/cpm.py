@@ -12,16 +12,19 @@ def gen_cpm(count_matrix):
     return cpm_df
 
 def filter_cpm(cpm_df):
+    '''Keeps only the rows of a dataframe that contain at least 2 fields with a "counts per million" value that
+    are greater than .5
+    '''
+    print(cpm_df.head().to_string())
     cpm_df_nan = cpm_df[(cpm_df > 0.5)]
-    cpm_df_nan_drop = cpm_df_nan.dropna(thresh=4)
+    print(cpm_df_nan.head().to_string())
+    cpm_df_nan_drop = cpm_df_nan.dropna(thresh=2)
     return cpm_df.merge(cpm_df_nan_drop, on=list(cpm_df.columns.values), left_index=True, right_index=True)
 
 if __name__ == "__main__":
     cpm_df = gen_cpm(count_matrix=r'C:\Users\vande060\Desktop\coding\projects\Harding-RNA-Sequencing-Pipeline\featureCounts_matrix.csv')
     filtered_df = filter_cpm(cpm_df)
-    print(cpm_df)
-    print(cpm_df.head().to_string())
-    print(filtered_df)
-    print(filtered_df.head().to_string())
+
+
 
 
