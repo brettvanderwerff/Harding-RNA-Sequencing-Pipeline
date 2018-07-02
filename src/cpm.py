@@ -13,8 +13,8 @@ def gen_cpm(count_matrix):
 
 def filter_cpm(cpm_df):
     cpm_df_nan = cpm_df[(cpm_df >= 0.5)]
-    cpm_df_nan_drop = cpm_df_nan.dropna(thresh=2)
-    return cpm_df.merge(cpm_df_nan_drop, on='Geneid')
+    cpm_df_nan_drop = cpm_df_nan.dropna(thresh=4)
+    return cpm_df.merge(cpm_df_nan_drop, on=list(cpm_df.columns.values), left_index=True, right_index=True)
 
 if __name__ == "__main__":
     cpm_df = gen_cpm(count_matrix='featureCounts_matrix.csv')
