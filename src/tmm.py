@@ -1,6 +1,8 @@
 import pandas as pd
 from src import cpm
 from statistics import mean
+pd.set_option('precision',10)
+
 
 def id_ref(filtered_matrix):
     '''Identifies the reference sample by which all other samples will be normalized against by the trimmed mean m
@@ -13,7 +15,7 @@ def id_ref(filtered_matrix):
         scaled_df[column] = pd.Series(column_list).values
     quantiles = scaled_df.quantile(q=.75)
     average_quantile = mean(scaled_df.quantile(q=.75).values)
-    quantiles = abs(quantiles - average_quantile)
+    return (abs(quantiles - average_quantile)).idxmin()
 
 
 def tmm(filtered_matrix):
@@ -27,4 +29,4 @@ if __name__ == '__main__':
     count_matrix = r'C:\Users\vande060\Desktop\coding\projects\Harding-RNA-Sequencing-Pipeline\featureCounts_matrix.csv'
     cpm_df = cpm.gen_cpm(count_matrix)
     filtered_matrix = cpm.filter_matrix(cpm_df, count_matrix)
-    id_ref(filtered_matrix)
+    print(id_ref(filtered_matrix))
