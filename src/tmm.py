@@ -1,5 +1,5 @@
 from math import log
-from math import inf
+import numpy as np
 import pandas as pd
 from src import cpm
 from statistics import mean
@@ -37,9 +37,9 @@ def log_ratio(reference_sample, scaled_df):
             try:
                 column_list.append(log(field_subject,2)/log(field_reference,2))
             except ValueError as e:
-                column_list.append(inf)
+                column_list.append(np.nan)
         log_ratio_df[column] = pd.Series(column_list).values
-    return log_ratio_df
+    return log_ratio_df.dropna()
 
 
 def tmm(filtered_matrix):
