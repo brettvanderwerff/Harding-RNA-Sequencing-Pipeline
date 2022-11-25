@@ -13,7 +13,26 @@ def get_star():
         star_url = 'https://github.com/alexdobin/STAR/archive/2.6.0a.tar.gz'
         wget.download(star_url)
         with tarfile.open(os.path.join(file_dir, os.path.basename('"STAR-2.6.0a.tar.gz"')), "r") as tar_obj:
-            tar_obj.extractall(file_dir)
+            def is_within_directory(directory, target):
+                
+                abs_directory = os.path.abspath(directory)
+                abs_target = os.path.abspath(target)
+            
+                prefix = os.path.commonprefix([abs_directory, abs_target])
+                
+                return prefix == abs_directory
+            
+            def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+            
+                for member in tar.getmembers():
+                    member_path = os.path.join(path, member.name)
+                    if not is_within_directory(path, member_path):
+                        raise Exception("Attempted Path Traversal in Tar File")
+            
+                tar.extractall(path, members, numeric_owner=numeric_owner) 
+                
+            
+            safe_extract(tar_obj, file_dir)
         os.remove(os.path.join(file_dir, os.path.basename('STAR-2.6.0a.tar.gz')))
 
 def make_genome_index(genome_annotation_dir, genome_sequence_dir, genome_index_dir, star_dir):
